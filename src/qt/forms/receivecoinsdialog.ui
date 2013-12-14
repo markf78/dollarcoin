@@ -27,7 +27,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="BitcoinAmountField" name="reqAmount">
+      <widget class="CoinAmountField" name="reqAmount">
        <property name="minimumSize">
         <size>
          <width>80</width>
@@ -135,7 +135,7 @@
         <string>Clear</string>
        </property>
        <property name="icon">
-        <iconset resource="../bitcoin.qrc">
+        <iconset resource="../dollarcoin.qrc">
          <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
        </property>
        <property name="autoRepeatDelay">
@@ -171,7 +171,7 @@
         <string>&amp;Request payment</string>
        </property>
        <property name="icon">
-        <iconset resource="../bitcoin.qrc">
+        <iconset resource="../dollarcoin.qrc">
          <normaloff>:/icons/receiving_addresses</normaloff>:/icons/receiving_addresses</iconset>
        </property>
       </widget>
@@ -182,13 +182,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>BitcoinAmountField</class>
+   <class>CoinAmountField</class>
    <extends>QLineEdit</extends>
    <header>bitcoinamountfield.h</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../bitcoin.qrc"/>
+  <include location="../dollarcoin.qrc"/>
  </resources>
  <connections/>
 </ui>

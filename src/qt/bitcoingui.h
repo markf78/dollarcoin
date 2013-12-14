@@ -1,9 +1,10 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2013-2014 The Dollarcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOINGUI_H
-#define BITCOINGUI_H
+#ifndef DOLLARCOINGUI_H
+#define DOLLARCOINGUI_H
 
 #include <QMainWindow>
 #include <QMap>
@@ -25,18 +26,18 @@ class QProgressBar;
 QT_END_NAMESPACE
 
 /**
-  Bitcoin GUI main class. This class represents the main window of the Bitcoin UI. It communicates with both the client and
+  Dollarcoin GUI main class. This class represents the main window of the Dollarcoin UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
-class BitcoinGUI : public QMainWindow
+class CoinGUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
     static const QString DEFAULT_WALLET;
 
-    explicit BitcoinGUI(bool fIsTestnet = false, QWidget *parent = 0);
-    ~BitcoinGUI();
+    explicit CoinGUI(bool fIsTestnet = false, QWidget *parent = 0);
+    ~CoinGUI();
 
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
@@ -185,4 +186,4 @@ private slots:
     void detectShutdown();
 };
 
-#endif // BITCOINGUI_H
+#endif // DOLLARCOINGUI_H

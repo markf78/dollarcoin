@@ -3,8 +3,8 @@
 // Copyright (c) 2013-2014 The Dollarcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef BITCOIN_TXMEMPOOL_H
-#define BITCOIN_TXMEMPOOL_H
+#ifndef DOLLARCOIN_TXMEMPOOL_H
+#define DOLLARCOIN_TXMEMPOOL_H
 
 #include "coins.h"
 #include "core.h"
@@ -109,4 +109,4 @@ public:
     bool HaveCoins(const uint256 &txid);
 };
 
-#endif /* BITCOIN_TXMEMPOOL_H */
+#endif /* DOLLARCOIN_TXMEMPOOL_H */

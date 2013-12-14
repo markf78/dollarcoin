@@ -1,4 +1,5 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2013-2014 The Dollarcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -48,11 +49,11 @@
 
 using namespace boost;
 
-const int BITCOIN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
-const QString BITCOIN_IPC_PREFIX("bitcoin:");
-const char* BITCOIN_REQUEST_MIMETYPE = "application/bitcoin-paymentrequest";
-const char* BITCOIN_PAYMENTACK_MIMETYPE = "application/bitcoin-paymentack";
-const char* BITCOIN_PAYMENTACK_CONTENTTYPE = "application/bitcoin-payment";
+const int DOLLARCOIN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
+const QString DOLLARCOIN_IPC_PREFIX("bitcoin:");
+const char* DOLLARCOIN_REQUEST_MIMETYPE = "application/bitcoin-paymentrequest";
+const char* DOLLARCOIN_PAYMENTACK_MIMETYPE = "application/bitcoin-paymentack";
+const char* DOLLARCOIN_PAYMENTACK_CONTENTTYPE = "application/bitcoin-payment";
 
 X509_STORE* PaymentServer::certStore = NULL;
 void PaymentServer::freeCertStore()
@@ -71,7 +72,7 @@ void PaymentServer::freeCertStore()
 //
 static QString ipcServerName()
 {
-    QString name("BitcoinQt");
+    QString name("DollarcoinQt");
 
     // Append a simple hash of the datadir
     // Note that GetDataDir(true) returns a different path
@@ -190,14 +191,14 @@ bool PaymentServer::ipcSendCommandLine(int argc, char* argv[])
         if (arg.startsWith("-"))
             continue;
 
-        if (arg.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // bitcoin: URI
+        if (arg.startsWith(DOLLARCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // bitcoin: URI
         {
             savedPaymentRequests.append(arg);
 
             SendCoinsRecipient r;
-            if (GUIUtil::parseBitcoinURI(arg, &r))
+            if (GUIUtil::parseDollarcoinURI(arg, &r))
             {
-                CBitcoinAddress address(r.address.toStdString());
+                CCoinAddress address(r.address.toStdString());
 
                 SelectParams(CChainParams::MAIN);
                 if (!address.IsValid())
@@ -231,7 +232,7 @@ bool PaymentServer::ipcSendCommandLine(int argc, char* argv[])
     {
         QLocalSocket* socket = new QLocalSocket();
         socket->connectToServer(ipcServerName(), QIODevice::WriteOnly);
-        if (!socket->waitForConnected(BITCOIN_IPC_CONNECT_TIMEOUT))
+        if (!socket->waitForConnected(DOLLARCOIN_IPC_CONNECT_TIMEOUT))
         {
             delete socket;
             return false;
@@ -245,7 +246,7 @@ bool PaymentServer::ipcSendCommandLine(int argc, char* argv[])
         socket->write(block);
         socket->flush();
 
-        socket->waitForBytesWritten(BITCOIN_IPC_CONNECT_TIMEOUT);
+        socket->waitForBytesWritten(DOLLARCOIN_IPC_CONNECT_TIMEOUT);
         socket->disconnectFromServer();
         delete socket;
         fResult = true;
@@ -366,7 +367,7 @@ void PaymentServer::handleURIOrFile(const QString& s)
         return;
     }
 
-    if (s.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // bitcoin: URI
+    if (s.startsWith(DOLLARCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // bitcoin: URI
     {
 #if QT_VERSION < 0x050000
         QUrl uri(s);
@@ -391,11 +392,11 @@ void PaymentServer::handleURIOrFile(const QString& s)
         }
 
         SendCoinsRecipient recipient;
-        if (GUIUtil::parseBitcoinURI(s, &recipient))
+        if (GUIUtil::parseDollarcoinURI(s, &recipient))
             emit receivedPaymentRequest(recipient);
         else
             emit message(tr("URI handling"),
-                tr("URI can not be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters."),
+                tr("URI can not be parsed! This can be caused by an invalid Dollarcoin address or malformed URI parameters."),
                 CClientUIInterface::ICON_WARNING);
 
         return;
@@ -471,7 +472,7 @@ bool PaymentServer::processPaymentRequest(PaymentRequestPlus& request, SendCoins
         CTxDestination dest;
         if (ExtractDestination(sendingTo.first, dest)) {
             // Append destination address
-            addresses.append(QString::fromStdString(CBitcoinAddress(dest).ToString()));
+            addresses.append(QString::fromStdString(CCoinAddress(dest).ToString()));
         }
         else if (!recipient.authenticatedMerchant.isEmpty()){
             // Insecure payments to custom bitcoin addresses are not supported
@@ -487,7 +488,7 @@ bool PaymentServer::processPaymentRequest(PaymentRequestPlus& request, SendCoins
         CTxOut txOut(sendingTo.second, sendingTo.first);
         if (txOut.IsDust(CTransaction::nMinRelayTxFee)) {
             QString msg = tr("Requested payment amount of %1 is too small (considered dust).")
-                .arg(BitcoinUnits::formatWithUnit(optionsModel->getDisplayUnit(), sendingTo.second));
+                .arg(CoinUnits::formatWithUnit(optionsModel->getDisplayUnit(), sendingTo.second));
 
             qDebug() << "PaymentServer::processPaymentRequest : " << msg;
             emit message(tr("Payment request error"), msg, CClientUIInterface::MSG_ERROR);
@@ -515,7 +516,7 @@ void PaymentServer::fetchRequest(const QUrl& url)
     netRequest.setAttribute(QNetworkRequest::User, "PaymentRequest");
     netRequest.setUrl(url);
     netRequest.setRawHeader("User-Agent", CLIENT_NAME.c_str());
-    netRequest.setRawHeader("Accept", BITCOIN_REQUEST_MIMETYPE);
+    netRequest.setRawHeader("Accept", DOLLARCOIN_REQUEST_MIMETYPE);
     netManager->get(netRequest);
 }
 
@@ -528,9 +529,9 @@ void PaymentServer::fetchPaymentACK(CWallet* wallet, SendCoinsRecipient recipien
     QNetworkRequest netRequest;
     netRequest.setAttribute(QNetworkRequest::User, "PaymentACK");
     netRequest.setUrl(QString::fromStdString(details.payment_url()));
-    netRequest.setHeader(QNetworkRequest::ContentTypeHeader, BITCOIN_PAYMENTACK_CONTENTTYPE);
+    netRequest.setHeader(QNetworkRequest::ContentTypeHeader, DOLLARCOIN_PAYMENTACK_CONTENTTYPE);
     netRequest.setRawHeader("User-Agent", CLIENT_NAME.c_str());
-    netRequest.setRawHeader("Accept", BITCOIN_PAYMENTACK_MIMETYPE);
+    netRequest.setRawHeader("Accept", DOLLARCOIN_PAYMENTACK_MIMETYPE);
 
     payments::Payment payment;
     payment.set_merchant_data(details.merchant_data());

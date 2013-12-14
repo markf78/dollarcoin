@@ -102,7 +102,7 @@ QT_MOC_CPP = moc_aboutdialog.cpp moc_addressbookpage.cpp \
   moc_transactiontablemodel.cpp moc_transactionview.cpp moc_walletframe.cpp \
   moc_walletmodel.cpp moc_walletview.cpp
 
-BITCOIN_MM = macdockiconhandler.mm macnotificationhandler.mm
+DOLLARCOIN_MM = macdockiconhandler.mm macnotificationhandler.mm
 
 QT_MOC = intro.moc overviewpage.moc rpcconsole.moc
 
@@ -113,7 +113,7 @@ PROTOBUF_CC = paymentrequest.pb.cc
 PROTOBUF_H = paymentrequest.pb.h
 PROTOBUF_PROTO = paymentrequest.proto
 
-BITCOIN_QT_H  = aboutdialog.h addressbookpage.h addresstablemodel.h \
+DOLLARCOIN_QT_H  = aboutdialog.h addressbookpage.h addresstablemodel.h \
   askpassphrasedialog.h bitcoinaddressvalidator.h bitcoinamountfield.h \
   bitcoingui.h bitcoinunits.h clientmodel.h coincontroldialog.h coincontroltreewidget.h csvmodelwriter.h \
   editaddressdialog.h guiconstants.h guiutil.h intro.h macdockiconhandler.h \
@@ -145,7 +145,7 @@ RES_ICONS = res/icons/bitcoin.png res/icons/address-book.png \
   res/icons/qrcode.png res/icons/debugwindow.png res/icons/bitcoin.ico \
   res/icons/bitcoin_testnet.ico
 
-BITCOIN_QT_CPP = aboutdialog.cpp addressbookpage.cpp \
+DOLLARCOIN_QT_CPP = aboutdialog.cpp addressbookpage.cpp \
   addresstablemodel.cpp askpassphrasedialog.cpp bitcoinaddressvalidator.cpp \
   bitcoinamountfield.cpp bitcoin.cpp bitcoingui.cpp \
   bitcoinunits.cpp clientmodel.cpp \
@@ -168,11 +168,11 @@ RES_IMAGES = res/images/about.png res/images/splash.png \
 
 RES_MOVIES = res/movies/update_spinner.mng
 
-BITCOIN_RC = res/bitcoin-qt-res.rc
+DOLLARCOIN_RC = res/bitcoin-qt-res.rc
 
 libbitcoinqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(QT_INCLUDES) \
   -I$(top_srcdir)/src/qt/forms $(QT_DBUS_INCLUDES)
-libbitcoinqt_a_SOURCES = $(BITCOIN_QT_CPP) $(BITCOIN_QT_H) $(QT_FORMS_UI) \
+libbitcoinqt_a_SOURCES = $(DOLLARCOIN_QT_CPP) $(DOLLARCOIN_QT_H) $(QT_FORMS_UI) \
   $(QT_QRC) $(QT_TS) $(PROTOBUF_PROTO) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES)
 
 nodist_libbitcoinqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
@@ -186,10 +186,10 @@ $(QT_MOC): $(PROTOBUF_H)
 $(QT_MOC_CPP): $(PROTOBUF_H)
 
 if TARGET_DARWIN
-  libbitcoinqt_a_SOURCES += $(BITCOIN_MM)
+  libbitcoinqt_a_SOURCES += $(DOLLARCOIN_MM)
 endif
 if TARGET_WINDOWS
-  libbitcoinqt_a_SOURCES += $(BITCOIN_RC)
+  libbitcoinqt_a_SOURCES += $(DOLLARCOIN_RC)
 endif
 #
 
@@ -197,7 +197,7 @@ endif
 bitcoin_qt_CPPFLAGS = $(AM_CPPFLAGS) $(QT_INCLUDES) \
   -I$(top_srcdir)/src/qt/forms
 bitcoin_qt_SOURCES = bitcoin.cpp
-bitcoin_qt_LDADD = libbitcoinqt.a $(LIBBITCOIN_SERVER) $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBLEVELDB) $(LIBMEMENV) \
+bitcoin_qt_LDADD = libbitcoinqt.a $(LIBDOLLARCOIN_SERVER) $(LIBDOLLARCOIN_CLI) $(LIBDOLLARCOIN_COMMON) $(LIBLEVELDB) $(LIBMEMENV) \
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(PROTOBUF_LIBS) $(BDB_LIBS)
 
 # forms/foo.h -> forms/ui_foo.h
@@ -212,7 +212,7 @@ QT_QM=$(QT_TS:.ts=.qm)
 bitcoinstrings.cpp: FORCE
 	$(MAKE) -C $(top_srcdir)/src qt/bitcoinstrings.cpp
 
-translate: bitcoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(BITCOIN_QT_CPP) $(BITCOIN_QT_H) $(BITCOIN_MM)
+translate: bitcoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(DOLLARCOIN_QT_CPP) $(DOLLARCOIN_QT_H) $(DOLLARCOIN_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
 	@$(LUPDATE) $^ -locations relative -no-obsolete -ts locale/bitcoin_en.ts
 

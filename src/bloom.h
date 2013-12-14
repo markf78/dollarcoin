@@ -3,8 +3,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_BLOOM_H
-#define BITCOIN_BLOOM_H
+#ifndef DOLLARCOIN_BLOOM_H
+#define DOLLARCOIN_BLOOM_H
 
 #include "serialize.h"
 
@@ -90,4 +90,4 @@ public:
     void UpdateEmptyFull();
 };
 
-#endif /* BITCOIN_BLOOM_H */
+#endif /* DOLLARCOIN_BLOOM_H */

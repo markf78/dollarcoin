@@ -3,7 +3,7 @@ include Makefile.include
 AM_CPPFLAGS += -I$(top_srcdir)/src/leveldb/helpers/memenv \
   -I$(builddir)
 
-noinst_LIBRARIES = libbitcoin_server.a libbitcoin_common.a libbitcoin_cli.a
+noinst_LIBRARIES = libdollarcoin_server.a libdollarcoin_common.a libdollarcoin_cli.a
 
 bin_PROGRAMS = bitcoind bitcoin-cli
 
@@ -11,7 +11,7 @@ SUBDIRS = . $(BUILD_QT) $(BUILD_TEST)
 DIST_SUBDIRS = . qt test
 .PHONY: FORCE
 # bitcoin core #
-BITCOIN_CORE_H = addrman.h alert.h allocators.h base58.h bignum.h \
+DOLLARCOIN_CORE_H = addrman.h alert.h allocators.h base58.h bignum.h \
   rpcclient.h \
   rpcprotocol.h \
   rpcserver.h \
@@ -33,7 +33,7 @@ obj/build.h: FORCE
 	  $(abs_top_srcdir)
 version.o: obj/build.h
 
-libbitcoin_server_a_SOURCES = addrman.cpp alert.cpp \
+libdollarcoin_server_a_SOURCES = addrman.cpp alert.cpp \
   rpcserver.cpp \
   bloom.cpp \
   chainparams.cpp checkpoints.cpp coins.cpp crypter.cpp db.cpp \
@@ -41,9 +41,9 @@ libbitcoin_server_a_SOURCES = addrman.cpp alert.cpp \
   net.cpp noui.cpp rpcblockchain.cpp rpcdump.cpp \
   rpcmining.cpp rpcnet.cpp rpcrawtransaction.cpp rpcwallet.cpp \
   txdb.cpp txmempool.cpp wallet.cpp walletdb.cpp $(JSON_H) \
-  $(BITCOIN_CORE_H)
+  $(DOLLARCOIN_CORE_H)
 
-libbitcoin_common_a_SOURCES = \
+libdollarcoin_common_a_SOURCES = \
   allocators.cpp \
   chainparams.cpp \
   core.cpp \
@@ -56,17 +56,17 @@ libbitcoin_common_a_SOURCES = \
   sync.cpp \
   util.cpp \
   version.cpp \
-  $(BITCOIN_CORE_H)
+  $(DOLLARCOIN_CORE_H)
 
-libbitcoin_cli_a_SOURCES = \
+libdollarcoin_cli_a_SOURCES = \
   rpcclient.cpp \
-  $(BITCOIN_CORE_H)
+  $(DOLLARCOIN_CORE_H)
 
-nodist_libbitcoin_common_a_SOURCES = $(top_srcdir)/src/obj/build.h
+nodist_libdollarcoin_common_a_SOURCES = $(top_srcdir)/src/obj/build.h
 #
 
 # bitcoind binary #
-bitcoind_LDADD = libbitcoin_server.a libbitcoin_cli.a libbitcoin_common.a leveldb/libleveldb.a leveldb/libmemenv.a \
+bitcoind_LDADD = libdollarcoin_server.a libdollarcoin_cli.a libdollarcoin_common.a leveldb/libleveldb.a leveldb/libmemenv.a \
   $(BOOST_LIBS)
 bitcoind_SOURCES = bitcoind.cpp
 #
@@ -79,12 +79,12 @@ AM_CPPFLAGS += $(BDB_CPPFLAGS)
 bitcoind_LDADD += $(BDB_LIBS)
 
 # bitcoin-cli binary #
-bitcoin_cli_LDADD = libbitcoin_cli.a libbitcoin_common.a $(BOOST_LIBS)
-bitcoin_cli_SOURCES = bitcoin-cli.cpp
+dollarcoin_cli_LDADD = libdollarcoin_cli.a libdollarcoin_common.a $(BOOST_LIBS)
+dollarcoin_cli_SOURCES = bitcoin-cli.cpp
 #
 
 if TARGET_WINDOWS
-bitcoin_cli_SOURCES += bitcoin-cli-res.rc
+dollarcoin_cli_SOURCES += bitcoin-cli-res.rc
 endif
 
 leveldb/libleveldb.a: leveldb/libmemenv.a
@@ -94,7 +94,7 @@ leveldb/%.a:
 	  CC="$(CC)" PLATFORM=$(TARGET_OS) AR="$(AR)" $(LEVELDB_TARGET_FLAGS) \
 	  OPT="$(CXXFLAGS) $(CPPFLAGS)"
 
-qt/bitcoinstrings.cpp: $(libbitcoin_server_a_SOURCES) $(libbitcoin_common_a_SOURCES) $(libbitcoin_cli_a_SOURCES)
+qt/bitcoinstrings.cpp: $(libdollarcoin_server_a_SOURCES) $(libdollarcoin_common_a_SOURCES) $(libdollarcoin_cli_a_SOURCES)
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
 	@cd $(top_srcdir); XGETTEXT=$(XGETTEXT) share/qt/extract_strings_qt.py
 
