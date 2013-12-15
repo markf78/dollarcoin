@@ -80,8 +80,8 @@ CoinGUI::CoinGUI(bool fIsTestnet, QWidget *parent) :
     else
     {
         setWindowTitle(tr("Dollarcoin") + " - " + tr("Wallet") + " " + tr("[testnet]"));
-        QApplication::setWindowIcon(QIcon(":icons/bitcoin_testnet"));
-        setWindowIcon(QIcon(":icons/bitcoin_testnet"));
+        QApplication::setWindowIcon(QIcon(":icons/dollarcoin_testnet"));
+        setWindowIcon(QIcon(":icons/dollarcoin_testnet"));
     }
 #else
     setUnifiedTitleAndToolBarOnMac(true);
@@ -90,7 +90,7 @@ CoinGUI::CoinGUI(bool fIsTestnet, QWidget *parent) :
     if (!fIsTestnet)
         MacDockIconHandler::instance()->setIcon(QIcon(":icons/bitcoin"));
     else
-        MacDockIconHandler::instance()->setIcon(QIcon(":icons/bitcoin_testnet"));
+        MacDockIconHandler::instance()->setIcon(QIcon(":icons/dollarcoin_testnet"));
 #endif
 
     // Create wallet frame and make it the central widget
@@ -228,7 +228,7 @@ void CoinGUI::createActions(bool fIsTestnet)
     if (!fIsTestnet)
         aboutAction = new QAction(QIcon(":/icons/bitcoin"), tr("&About Dollarcoin"), this);
     else
-        aboutAction = new QAction(QIcon(":/icons/bitcoin_testnet"), tr("&About Dollarcoin"), this);
+        aboutAction = new QAction(QIcon(":/icons/dollarcoin_testnet"), tr("&About Dollarcoin"), this);
     aboutAction->setStatusTip(tr("Show information about Dollarcoin"));
     aboutAction->setMenuRole(QAction::AboutRole);
 #if QT_VERSION < 0x050000
@@ -244,7 +244,7 @@ void CoinGUI::createActions(bool fIsTestnet)
     if (!fIsTestnet)
         toggleHideAction = new QAction(QIcon(":/icons/bitcoin"), tr("&Show / Hide"), this);
     else
-        toggleHideAction = new QAction(QIcon(":/icons/bitcoin_testnet"), tr("&Show / Hide"), this);
+        toggleHideAction = new QAction(QIcon(":/icons/dollarcoin_testnet"), tr("&Show / Hide"), this);
     toggleHideAction->setStatusTip(tr("Show or hide the main Window"));
 
     encryptWalletAction = new QAction(QIcon(":/icons/lock_closed"), tr("&Encrypt Wallet..."), this);
