@@ -10,7 +10,7 @@ LIBDOLLARCOIN_COMMON=$(top_builddir)/src/libdollarcoin_common.a
 LIBDOLLARCOIN_CLI=$(top_builddir)/src/libdollarcoin_cli.a
 LIBLEVELDB=$(top_builddir)/src/leveldb/libleveldb.a
 LIBMEMENV=$(top_builddir)/src/leveldb/libmemenv.a
-LIBDOLLARCOINQT=$(top_builddir)/src/qt/libbitcoinqt.a
+LIBDOLLARCOINQT=$(top_builddir)/src/qt/libdollarcoinqt.a
 
 $(LIBDOLLARCOIN):
 	$(MAKE) -C $(top_builddir)/src $(@F)

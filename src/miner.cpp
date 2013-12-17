@@ -498,7 +498,7 @@ void static DollarcoinMiner(CWallet *pwallet)
 {
     LogPrintf("DollarcoinMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("bitcoin-miner");
+    RenameThread("dollarcoin-miner");
 
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);
