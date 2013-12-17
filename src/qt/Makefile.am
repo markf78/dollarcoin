@@ -84,8 +84,8 @@ QT_FORMS_UI = forms/aboutdialog.ui forms/addressbookpage.ui \
 
 QT_MOC_CPP = moc_aboutdialog.cpp moc_addressbookpage.cpp \
   moc_addresstablemodel.cpp moc_askpassphrasedialog.cpp \
-  moc_dollarcoinaddressvalidator.cpp moc_dollarcoinamountfield.cpp \
-  moc_dollarcoingui.cpp moc_dollarcoinunits.cpp moc_clientmodel.cpp \
+  moc_coinaddressvalidator.cpp moc_coinamountfield.cpp \
+  moc_coingui.cpp moc_coinunits.cpp moc_clientmodel.cpp \
   moc_coincontroldialog.cpp \
   moc_coincontroltreewidget.cpp \
   moc_csvmodelwriter.cpp moc_editaddressdialog.cpp moc_guiutil.cpp \
@@ -114,8 +114,8 @@ PROTOBUF_H = paymentrequest.pb.h
 PROTOBUF_PROTO = paymentrequest.proto
 
 DOLLARCOIN_QT_H  = aboutdialog.h addressbookpage.h addresstablemodel.h \
-  askpassphrasedialog.h dollarcoinaddressvalidator.h dollarcoinamountfield.h \
-  dollarcoingui.h dollarcoinunits.h clientmodel.h coincontroldialog.h coincontroltreewidget.h csvmodelwriter.h \
+  askpassphrasedialog.h coinaddressvalidator.h coinamountfield.h \
+  coingui.h coinunits.h clientmodel.h coincontroldialog.h coincontroltreewidget.h csvmodelwriter.h \
   editaddressdialog.h guiconstants.h guiutil.h intro.h macdockiconhandler.h \
   macnotificationhandler.h monitoreddatamapper.h notificator.h \
   openuridialog.h \
@@ -146,9 +146,9 @@ RES_ICONS = res/icons/dollarcoin.png res/icons/address-book.png \
   res/icons/dollarcoin_testnet.ico
 
 DOLLARCOIN_QT_CPP = aboutdialog.cpp addressbookpage.cpp \
-  addresstablemodel.cpp askpassphrasedialog.cpp dollarcoinaddressvalidator.cpp \
-  dollarcoinamountfield.cpp dollarcoin.cpp dollarcoingui.cpp \
-  dollarcoinunits.cpp clientmodel.cpp \
+  addresstablemodel.cpp askpassphrasedialog.cpp coinaddressvalidator.cpp \
+  coinamountfield.cpp dollarcoin.cpp coingui.cpp \
+  coinunits.cpp clientmodel.cpp \
   coincontroldialog.cpp \
   coincontroltreewidget.cpp \
   csvmodelwriter.cpp editaddressdialog.cpp \
