@@ -4,18 +4,18 @@ SUBDIRS = src
 
 GZIP_ENV="-9n"
 
-BITCOIND_BIN=$(top_builddir)/src/bitcoind$(EXEEXT)
-BITCOIN_QT_BIN=$(top_builddir)/src/qt/bitcoin-qt$(EXEEXT)
-BITCOIN_WIN_INSTALLER=$(PACKAGE)-$(PACKAGE_VERSION)-win32-setup$(EXEEXT)
+DOLLARCOIND_BIN=$(top_builddir)/src/dollarcoind$(EXEEXT)
+DOLLARCOIN_QT_BIN=$(top_builddir)/src/qt/dollarcoin-qt$(EXEEXT)
+DOLLARCOIN_WIN_INSTALLER=$(PACKAGE)-$(PACKAGE_VERSION)-win32-setup$(EXEEXT)
 
-OSX_APP=Bitcoin-Qt.app
-OSX_DMG=Bitcoin-Qt.dmg
+OSX_APP=Dollarcoin-Qt.app
+OSX_DMG=Dollarcoin-Qt.dmg
 OSX_DEPLOY_SCRIPT=$(top_srcdir)/contrib/macdeploy/macdeployqtplus
 OSX_FANCY_PLIST=$(top_srcdir)/contrib/macdeploy/fancy.plist
-OSX_INSTALLER_ICONS=$(top_srcdir)/src/qt/res/icons/bitcoin.icns
+OSX_INSTALLER_ICONS=$(top_srcdir)/src/qt/res/icons/dollarcoin.icns
 OSX_PLIST=$(top_srcdir)/share/qt/Info.plist #not installed
 
-WINDOWS_PACKAGING = $(top_srcdir)/share/pixmaps/bitcoin.ico \
+WINDOWS_PACKAGING = $(top_srcdir)/share/pixmaps/dollarcoin.ico \
   $(top_srcdir)/share/pixmaps/nsis-header.bmp \
   $(top_srcdir)/share/pixmaps/nsis-wizard.bmp \
   $(top_srcdir)/doc/README_windows.txt
@@ -24,9 +24,9 @@ OSX_PACKAGING = $(OSX_DEPLOY_SCRIPT) $(OSX_FANCY_PLIST) $(OSX_INSTALLER_ICONS) \
   $(top_srcdir)/contrib/macdeploy/background.png
 
 COVERAGE_INFO = baseline_filtered_combined.info baseline.info block_test.info \
-  leveldb_baseline.info test_bitcoin_filtered.info total_coverage.info \
+  leveldb_baseline.info test_dollarcoin_filtered.info total_coverage.info \
   baseline_filtered.info block_test_filtered.info \
-  leveldb_baseline_filtered.info test_bitcoin_coverage.info test_bitcoin.info
+  leveldb_baseline_filtered.info test_dollarcoin_coverage.info test_dollarcoin.info
 
 dist-hook:
 	-$(MAKE) -C $(top_distdir)/src/leveldb clean
@@ -40,19 +40,19 @@ distcheck-hook:
 distcleancheck:
 	@:
 
-$(BITCOIN_WIN_INSTALLER): $(BITCOIND_BIN) $(BITCOIN_QT_BIN)
+$(DOLLARCOIN_WIN_INSTALLER): $(DOLLARCOIND_BIN) $(DOLLARCOIN_QT_BIN)
 	$(MAKE) distdir
 	$(MKDIR_P) $(top_builddir)/release
-	$(INSTALL_STRIP_PROGRAM) $(top_builddir)/src/bitcoind$(EXEEXT) $(top_builddir)/release
-	$(INSTALL_STRIP_PROGRAM) $(top_builddir)/src/qt/bitcoin-qt$(EXEEXT) $(top_builddir)/release
+	$(INSTALL_STRIP_PROGRAM) $(top_builddir)/src/dollarcoind$(EXEEXT) $(top_builddir)/release
+	$(INSTALL_STRIP_PROGRAM) $(top_builddir)/src/qt/dollarcoin-qt$(EXEEXT) $(top_builddir)/release
 	@test -f $(MAKENSIS) && $(MAKENSIS) $(top_builddir)/share/setup.nsi || \
 	  echo error: could not build $@
 
-$(BITCOIND_BIN):
-	make -C $(top_srcdir)/src bitcoind$(EXEEXT)
+$(DOLLARCOIND_BIN):
+	make -C $(top_srcdir)/src dollarcoind$(EXEEXT)
 
-$(BITCOIN_QT_BIN):
-	make -C $(top_srcdir)/src/qt bitcoin-qt$(EXEEXT)
+$(DOLLARCOIN_QT_BIN):
+	make -C $(top_srcdir)/src/qt dollarcoin-qt$(EXEEXT)
 
 
 $(OSX_APP)/Contents/PkgInfo:
@@ -67,17 +67,17 @@ $(OSX_APP)/Contents/Info.plist: $(OSX_PLIST)
 	$(MKDIR_P) $(@D)
 	$(INSTALL) $< $@
 
-$(OSX_APP)/Contents/Resources/bitcoin.icns: $(OSX_INSTALLER_ICONS)
+$(OSX_APP)/Contents/Resources/dollarcoin.icns: $(OSX_INSTALLER_ICONS)
 	$(MKDIR_P) $(@D)
 	$(INSTALL) $< $@
 
-$(OSX_APP)/Contents/MacOS/Bitcoin-Qt: $(BITCOIN_QT_BIN)
+$(OSX_APP)/Contents/MacOS/Dollarcoin-Qt: $(DOLLARCOIN_QT_BIN)
 	$(MKDIR_P) $(@D)
 	$(INSTALL_STRIP_PROGRAM)  $< $@
 
 OSX_APP_BUILT=$(OSX_APP)/Contents/PkgInfo $(OSX_APP)/Contents/Resources/empty.lproj \
-  $(OSX_APP)/Contents/Resources/bitcoin.icns $(OSX_APP)/Contents/Info.plist \
-  $(OSX_APP)/Contents/MacOS/Bitcoin-Qt
+  $(OSX_APP)/Contents/Resources/dollarcoin.icns $(OSX_APP)/Contents/Info.plist \
+  $(OSX_APP)/Contents/MacOS/Dollarcoin-Qt
 
 $(OSX_DMG): $(OSX_APP_BUILT) $(OSX_PACKAGING)
 	$(OSX_DEPLOY_SCRIPT) $(OSX_APP) -add-qt-tr da,de,es,hu,ru,uk,zh_CN,zh_TW -dmg -fancy $(OSX_FANCY_PLIST) -verbose 2
@@ -88,7 +88,7 @@ appbundle: $(OSX_APP_BUILT)
 deploy: $(OSX_DMG)
 endif
 if TARGET_WINDOWS
-deploy: $(BITCOIN_WIN_INSTALLER)
+deploy: $(DOLLARCOIN_WIN_INSTALLER)
 endif
 
 if USE_LCOV
@@ -108,32 +108,32 @@ leveldb_baseline_filtered.info: leveldb_baseline.info
 baseline_filtered_combined.info: leveldb_baseline_filtered.info baseline_filtered.info
 	$(LCOV) -a leveldb_baseline_filtered.info -a baseline_filtered.info -o $@
 
-test_bitcoin.info: baseline_filtered_combined.info
+test_dollarcoin.info: baseline_filtered_combined.info
 	$(MAKE) -C src/ check
-	$(LCOV) -c -d $(abs_builddir)/src -t test_bitcoin -o $@
+	$(LCOV) -c -d $(abs_builddir)/src -t test_dollarcoin -o $@
 	$(LCOV) -z -d $(abs_builddir)/src
 	$(LCOV) -z -d $(abs_builddir)/src/leveldb
 
-test_bitcoin_filtered.info: test_bitcoin.info
+test_dollarcoin_filtered.info: test_dollarcoin.info
 	$(LCOV) -r $< "/usr/include/*" -o $@
 
-block_test.info: test_bitcoin_filtered.info
+block_test.info: test_dollarcoin_filtered.info
 	$(MKDIR_P) qa/tmp
-	-@TIMEOUT=15 qa/pull-tester/run-bitcoind-for-test.sh $(JAVA) -jar $(JAVA_COMPARISON_TOOL) qa/tmp/compTool 0
-	$(LCOV) -c -d $(abs_builddir)/src --t BitcoinJBlockTest -o $@
+	-@TIMEOUT=15 qa/pull-tester/run-dollarcoind-for-test.sh $(JAVA) -jar $(JAVA_COMPARISON_TOOL) qa/tmp/compTool 0
+	$(LCOV) -c -d $(abs_builddir)/src --t DollarcoinJBlockTest -o $@
 	$(LCOV) -z -d $(abs_builddir)/src
 	$(LCOV) -z -d $(abs_builddir)/src/leveldb
 
 block_test_filtered.info: block_test.info
 	$(LCOV) -r $< "/usr/include/*" -o $@
 
-test_bitcoin_coverage.info: baseline_filtered_combined.info test_bitcoin_filtered.info
-	$(LCOV) -a baseline_filtered.info -a leveldb_baseline_filtered.info -a test_bitcoin_filtered.info -o $@
+test_dollarcoin_coverage.info: baseline_filtered_combined.info test_dollarcoin_filtered.info
+	$(LCOV) -a baseline_filtered.info -a leveldb_baseline_filtered.info -a test_dollarcoin_filtered.info -o $@
 
-total_coverage.info:  baseline_filtered_combined.info test_bitcoin_filtered.info block_test_filtered.info
-	$(LCOV) -a baseline_filtered.info -a leveldb_baseline_filtered.info -a test_bitcoin_filtered.info -a block_test_filtered.info -o $@ | $(GREP) "\%" | $(AWK) '{ print substr($$3,2,50) "/" $$5 }' > coverage_percent.txt
+total_coverage.info:  baseline_filtered_combined.info test_dollarcoin_filtered.info block_test_filtered.info
+	$(LCOV) -a baseline_filtered.info -a leveldb_baseline_filtered.info -a test_dollarcoin_filtered.info -a block_test_filtered.info -o $@ | $(GREP) "\%" | $(AWK) '{ print substr($$3,2,50) "/" $$5 }' > coverage_percent.txt
 
-test_bitcoin.coverage/.dirstamp:  test_bitcoin_coverage.info
+test_dollarcoin.coverage/.dirstamp:  test_dollarcoin_coverage.info
 	$(GENHTML) -s $< -o $(@D)
 	@touch $@
 
@@ -141,21 +141,21 @@ total.coverage/.dirstamp: total_coverage.info
 	$(GENHTML) -s $< -o $(@D)
 	@touch $@
 
-cov: test_bitcoin.coverage/.dirstamp total.coverage/.dirstamp
+cov: test_dollarcoin.coverage/.dirstamp total.coverage/.dirstamp
 
 endif
 
 if USE_COMPARISON_TOOL
 check-local:
 	$(MKDIR_P) qa/tmp
-	@qa/pull-tester/run-bitcoind-for-test.sh $(JAVA) -jar $(JAVA_COMPARISON_TOOL) qa/tmp/compTool $(COMPARISON_TOOL_REORG_TESTS)
+	@qa/pull-tester/run-dollarcoind-for-test.sh $(JAVA) -jar $(JAVA_COMPARISON_TOOL) qa/tmp/compTool $(COMPARISON_TOOL_REORG_TESTS)
 endif
 
 EXTRA_DIST = $(top_srcdir)/share/genbuild.sh qa/pull-tester/pull-tester.sh $(WINDOWS_PACKAGING) $(OSX_PACKAGING)
 
-CLEANFILES = $(OSX_DMG) $(OSX_APP) $(BITCOIN_WIN_INSTALLER)
+CLEANFILES = $(OSX_DMG) $(OSX_APP) $(DOLLARCOIN_WIN_INSTALLER)
 
 .INTERMEDIATE: $(COVERAGE_INFO)
 
 clean-local:
-	rm -rf test_bitcoin.coverage/ total.coverage/
+	rm -rf test_dollarcoin.coverage/ total.coverage/
