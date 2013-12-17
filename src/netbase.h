@@ -7,7 +7,7 @@
 #define DOLLARCOIN_NETBASE_H
 
 #if defined(HAVE_CONFIG_H)
-#include "bitcoin-config.h"
+#include "dollarcoin-config.h"
 #endif
 
 #include "compat.h"
